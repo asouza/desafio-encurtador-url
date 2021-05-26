@@ -19,7 +19,7 @@ public class LinkEncurtado {
 	private Long id;
 	private @NotBlank @URL String linkOriginal;
 	@NotBlank
-	private String idPublico;
+	public final String idPublico;
 	
 	
 	public LinkEncurtado(@NotBlank @URL String link, @Positive int quantidadeCaracteres) {
