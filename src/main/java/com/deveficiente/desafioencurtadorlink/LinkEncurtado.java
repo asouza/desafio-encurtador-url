@@ -5,9 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
@@ -22,8 +20,8 @@ public class LinkEncurtado {
 	public final String idPublico;
 	
 	
-	public LinkEncurtado(@NotBlank @URL String link, @Positive int quantidadeCaracteres) {
+	public LinkEncurtado(@NotBlank @URL String link, String idPublico) {
 		this.linkOriginal = link;
-		this.idPublico = RandomStringUtils.randomAlphabetic(quantidadeCaracteres);
+		this.idPublico = idPublico;
 	}
 }
