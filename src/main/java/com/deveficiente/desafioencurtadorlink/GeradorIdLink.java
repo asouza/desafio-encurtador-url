@@ -30,7 +30,7 @@ public class GeradorIdLink {
 
 		try {
 			String idLink = RandomStringUtils.randomAlphanumeric(6);
-			transactionProxy.executeInNewTransaction(() -> {
+			transactionProxy.executeInTransaction(() -> {
 				manager.persist(new IdGerado(idLink));				
 			});
 			return idLink;

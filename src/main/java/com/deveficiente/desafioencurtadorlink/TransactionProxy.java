@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class TransactionProxy {
 
 	
-	@Transactional(value = TxType.REQUIRES_NEW)
-	public void executeInNewTransaction(Runnable runnable) {
+	@Transactional
+	public void executeInTransaction(Runnable runnable) {
 		runnable.run();
 	}
 }
