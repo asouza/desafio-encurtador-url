@@ -11,8 +11,13 @@ public class LinkEncurtado {
 	@Id
 	@NotBlank
 	public final String idPublico;
-	private @NotBlank @URL String linkOriginal;
+	public final @NotBlank @URL String linkOriginal;
 	
+	@Deprecated
+	public LinkEncurtado() {
+		this.idPublico = null;
+		this.linkOriginal = null;
+	}
 	
 	public LinkEncurtado(@NotBlank @URL String link, @NotBlank String idPublico) {
 		this.linkOriginal = link;
