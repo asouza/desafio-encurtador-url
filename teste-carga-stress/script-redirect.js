@@ -1,5 +1,5 @@
 import http from 'k6/http';
-import { sleep,group } from 'k6';
+import { sleep,check } from 'k6';
 
 
 export function setup() {
@@ -37,6 +37,9 @@ export default function (data) {
       'redirects': 0    
   };	
 	
-  http.get(`http://${__ENV.HOST || "localhost"}:8080/`+idSelecionado,params)	
+  const res = http.get(`http://${__ENV.HOST || "localhost"}:8080/`+idSelecionado,params)
+  check(res, {
+    'status 302': (r) => r.status === 302,
+  });	
   sleep(1);
 }
