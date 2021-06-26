@@ -14,8 +14,13 @@ export function setup() {
   };
  
   const resultados = []
-  for(let i = 0; i < 3000; i++){
-  	resultados.push(http.post(`http://${__ENV.HOST}:8080/api/encurta`,payload,params).json());
+  const total = parseInt(__ENV.TOTAL || 3000)
+  const host = __ENV.HOST || "localhost"
+  console.log(`Gerando ${total} links...`)
+  console.log(`Usando o host ${host} ...`)
+
+  for(let i = 0; i < total; i++){
+  	resultados.push(http.post(`http://${host}:8080/api/encurta`,payload,params).json());
   }
 
   return { redirects : resultados };
@@ -25,13 +30,13 @@ export default function (data) {
   const size = data.redirects.length
   const index = parseInt(Math.random() * size)
   const idSelecionado = data.redirects[index].id
-  //console.log("Id selecionado = "+idSelecionado)
+  
 	
 
   const params = {
       'redirects': 0    
   };	
 	
-  http.get(`http://${__ENV.HOST}:8080/`+idSelecionado,params)	
+  http.get(`http://${__ENV.HOST || "localhost"}:8080/`+idSelecionado,params)	
   sleep(1);
 }
