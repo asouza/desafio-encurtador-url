@@ -15,7 +15,7 @@ export function setup() {
  
   const resultados = []
   for(let i = 0; i < 3000; i++){
-  	resultados.push(http.post('http://localhost:8080/api/encurta',payload,params).json());
+  	resultados.push(http.post(`http://${__ENV.HOST}:8080/api/encurta`,payload,params).json());
   }
 
   return { redirects : resultados };
@@ -32,6 +32,6 @@ export default function (data) {
       'redirects': 0    
   };	
 	
-  http.get('http://localhost:8080/'+idSelecionado,params)	
+  http.get(`http://${__ENV.HOST}:8080/`+idSelecionado,params)	
   sleep(1);
 }
