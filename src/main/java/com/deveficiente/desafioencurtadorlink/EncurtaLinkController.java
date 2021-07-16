@@ -78,6 +78,7 @@ public class EncurtaLinkController {
 	@GetMapping("/{id}")
 	public HttpEntity<?> redireciona(@PathVariable("id") String idLinkEncurtado,
 			@RequestHeader HttpHeaders headers) {
+		System.out.println("redirecionadno...");
 		LinkEncurtado link = manager.find(LinkEncurtado.class, idLinkEncurtado);
 
 		WebClient client = WebClient.create("http://localhost:8080");
@@ -105,9 +106,7 @@ public class EncurtaLinkController {
 	@PostMapping("/click/{id}")
 	// preciso bloquear para que as chamadas só venham de localhost
 	public void salvaClick(@PathVariable("id") String idLinkEncurtado,
-			@RequestHeader HttpHeaders headers) {
-		System.out.println("salvando clicks...");
-		System.out.println(headers.entrySet());
+			@RequestHeader HttpHeaders headers) throws InterruptedException {
 		LinkEncurtado link = manager.find(LinkEncurtado.class, idLinkEncurtado);
 		transactionProxy.executeAsyncInTransaction(
 				() -> manager.persist(new Click(link, headers)));
