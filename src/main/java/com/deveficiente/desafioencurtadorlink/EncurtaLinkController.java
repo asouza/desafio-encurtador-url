@@ -74,7 +74,7 @@ public class EncurtaLinkController {
 			@PathVariable("id") String idLinkEncurtado,@RequestHeader HttpHeaders headers) {
 		LinkEncurtado link = manager.find(LinkEncurtado.class,idLinkEncurtado);
 				
-		transactionProxy.executeInTransaction(() -> manager.persist(new Click(link,headers)));		
+		transactionProxy.asyncExecuteInTransaction(() -> manager.persist(new Click(link,headers)));		
 		
 		return ResponseEntity.status(HttpStatus.FOUND)
 				.location(link.original()).build();
