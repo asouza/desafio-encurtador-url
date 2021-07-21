@@ -15,12 +15,12 @@ export function setup() {
  
   const resultados = []
   const total = parseInt(__ENV.TOTAL || 3000)
-  const host = __ENV.HOST || "localhost"
+  const host = __ENV.HOST || "localhost:8080"
   console.log(`Gerando ${total} links...`)
   console.log(`Usando o host ${host} ...`)
 
   for(let i = 0; i < total; i++){
-  	resultados.push(http.post(`http://${host}:8080/api/encurta`,payload,params).json());
+  	resultados.push(http.post(`http://${host}/api/encurta`,payload,params).json());
   }
 
   return { redirects : resultados };
@@ -37,7 +37,7 @@ export default function (data) {
       'redirects': 0    
   };	
 	
-  const res = http.get(`http://${__ENV.HOST || "localhost"}:8080/`+idSelecionado,params)
+  const res = http.get(`http://${__ENV.HOST || "localhost:8080"}/`+idSelecionado,params)
   check(res, {
     'status 302': (r) => r.status === 302,
   });	

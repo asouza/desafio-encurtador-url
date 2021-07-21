@@ -9,5 +9,6 @@ public class DesafioEncurtadorLinkApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DesafioEncurtadorLinkApplication.class, args);
 	}
+	
 
 }
