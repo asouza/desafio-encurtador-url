@@ -39,7 +39,7 @@ export default function (data) {
 	
   const res = http.get(`http://${__ENV.HOST || "localhost:8080"}/`+idSelecionado,params)
   check(res, {
-    'status 302': (r) => r.status === 302,
+    'status 301': (r) => r.status === 301,
   });	
   sleep(1);
 }

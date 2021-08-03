@@ -1,7 +1,9 @@
 package com.deveficiente.desafioencurtadorlink;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,10 +37,10 @@ public class EncurtaLinkController {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(EncurtaLinkController.class);
-	
+
 	@GetMapping("/")
 	public void check() {
-		
+
 	}
 
 	@PostMapping(value = "/api/encurta")
@@ -56,7 +59,8 @@ public class EncurtaLinkController {
 			URI novoRedirecionamento = uriBuilder.path("/{idPublico}")
 					.buildAndExpand(novoLink.idPublico).toUri();
 			log.info("[LinkGerado] Novo link gerado {}", novoRedirecionamento);
-			return Map.of("redirect",novoRedirecionamento,"id",novoLink.idPublico);
+			return Map.of("redirect", novoRedirecionamento, "id",
+					novoLink.idPublico);
 			// 1
 		} catch (DataIntegrityViolationException exception) {
 			log.info(
@@ -70,13 +74,16 @@ public class EncurtaLinkController {
 	}
 
 	@GetMapping("/{id}")
-	public HttpEntity<?> redireciona(
-			@PathVariable("id") String idLinkEncurtado,@RequestHeader HttpHeaders headers) {
-		LinkEncurtado link = manager.find(LinkEncurtado.class,idLinkEncurtado);
-				
-		transactionProxy.asyncExecuteInTransaction(() -> manager.persist(new Click(link,headers)));		
-		
-		return ResponseEntity.status(HttpStatus.FOUND)
+	public HttpEntity<?> redireciona(@PathVariable("id") String idLinkEncurtado,
+			@RequestHeader HttpHeaders headers) {
+		LinkEncurtado link = manager.find(LinkEncurtado.class, idLinkEncurtado);
+
+		transactionProxy.asyncExecuteInTransaction(
+				() -> manager.persist(new Click(link, headers)));
+
+		return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+				.cacheControl(CacheControl.maxAge(90, TimeUnit.SECONDS)
+						.cachePrivate())
 				.location(link.original()).build();
 	}
 
